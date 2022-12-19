@@ -4,6 +4,19 @@ import broadcast from "../endpoints/broadcast";
 import getUsers from "../../database/getUsers";
 import { allCards } from "../../globals";
 
+function getStartingCard(): string {
+    const startableCards = [
+        'p0', 'p1', 'p2', 'p3', 'p4', 'p5',
+        'p6', 'p7', 'p8', 'p9', 'z0', 'z1',
+        'z2', 'z3', 'z4', 'z5', 'z6', 'z7',
+        'z8', 'z9', 'k0', 'k1', 'k2', 'k3',
+        'k4', 'k5', 'k6', 'k7', 'k8', 'k9',
+        's0', 's1', 's2', 's3', 's4', 's5',
+        's6', 's7', 's8', 's9'
+    ];
+    return startableCards[Math.floor(Math.random() * startableCards.length)];
+}
+
 export default async function (
     connection: SocketStream,
     key: string,
@@ -31,5 +44,6 @@ export default async function (
     }
     await client.SET(`${key}:users`, JSON.stringify(users));
     await client.SET(`${key}:currentPlayer`, 1);
+    await client.SET(`${key}:stack`, JSON.stringify([getStartingCard()]));
     broadcast(key, 'started');
 }

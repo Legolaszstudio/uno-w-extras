@@ -8,6 +8,7 @@ import getPlayers from './getPlayers';
 import recoLobby from './recoLobby';
 import startGame from './startGame';
 import getCurrentPlayer from './getCurrentPlayer';
+import getStack from './getStack';
 
 export default async function (
     request: FastifyRequest,
@@ -58,6 +59,12 @@ export default async function (
                 break;
             case 'getCurrentPlayer':
                 await getCurrentPlayer(
+                    connection,
+                    split[1],
+                );
+                break;
+            case 'getStack':
+                await getStack(
                     connection,
                     split[1],
                 );

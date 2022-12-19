@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { WebsocketService } from '../services/websocket/websocket.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
@@ -26,11 +26,13 @@ export class GameComponent implements OnInit {
     cards: string[];
   }[] = [];
   myCards: string[] = [];
+  stack: string[] = [];
 
   constructor(
     public websocket: WebsocketService,
     private router: Router,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -47,6 +49,7 @@ export class GameComponent implements OnInit {
       this.websocket.socket?.addEventListener('message', this.weGotALetter.bind(this));
       this.websocket.socket?.send(`getPlayers ${this.websocket.currentGame}`);
       this.websocket.socket?.send(`getCurrentPlayer ${this.websocket.currentGame}`);
+      this.websocket.socket?.send(`getStack ${this.websocket.currentGame}`);
     });
   }
 
@@ -62,10 +65,31 @@ export class GameComponent implements OnInit {
         cards: player.cards,
       }));
       this.playersWithoutMe = this.players.filter(player => player.id != this.websocket.currentId);
-      this.myCards = this.players.filter(player => player.id != this.websocket.currentId)[0].cards;
+      const tempMyCards = this.players.filter(player => player.id != this.websocket.currentId)[0].cards;
+      tempMyCards.sort((a, b) => {
+        if (a == b) {
+          return 0;
+        }
+
+        a = a.replace('+', 'p');
+        b = b.replace('+', 'p');
+
+        if (a.startsWith("p") || a.startsWith("z") || a.startsWith("k") || a.startsWith("s")) {
+          if (b.startsWith("p") || b.startsWith("z") || b.startsWith("k") || b.startsWith("s")) {
+            if (a.length <= 4 && b.length <= 4) {
+              return a.localeCompare(b);
+            }
+          }
+        }
+        return a.length > 4 ? 1 : -1;
+      });
+      this.myCards = tempMyCards;
     } else if (msg.startsWith("currentPlayer: ")) {
       this.currentPlayer = parseInt(msg.split(' ')[1]);
+    } else if (msg.startsWith("currentStack: ")) {
+      this.stack = JSON.parse(msg.split(' ')[1]);
     }
+    this.cdr.detectChanges();
   }
 
   cardStrToImgPath(card: string) {

@@ -17,13 +17,13 @@
     </div>
 
     <div>
-        <img src="/assets/Cards/k/0.jpg" class="centerCard cardShadow">
+        <img [src]="cardStrToImgPath(stack[stack.length - 1] ?? 'k0')" class="centerCard cardShadow">
     </div>
 
     <div class="bottomBar">
         <div class="cardCenter" style="border: 1px solid black">
             <!-- FIXME: Replace with card back -->
-            <img src="/assets/Cards/k/0.jpg" style="width: auto; height: 20vh; margin: 10px" alt="">
+            <img [src]="cardStrToImgPath('k0')" style="width: auto; height: 20vh; margin: 10px" alt="">
         </div>
         <div class="myCardsList" style="flex-grow: 2;">
             <div *ngFor="let card of myCards" class="cardCenter">

@@ -12,6 +12,7 @@ Unod már az uno-t? Akkor ezt most neked való! Bemutatjuk a világ legjobb, leg
     - Színre színt és számra számot lehet rakni.
     - A `wildcards` -okat bármilyen lapra le lehet rakni.
     - Amikor felhúztál egy vagy több lapot akkor már nem rakhatsz abban a körben le lapot.
+    - Egyszerre csak 1 lapot lehet letenni
     - Vannak különleges lapok:
         - `Semmi`: Ezt a kártyát bármire le tudod rakni, de konkrét semmire sem jó, viszont utolsó lapként nem tehető le. (4 lap összesen)
         - `Barátság Pusztító`: Ennél a kártyánál te mondod meg hogy mennyit húzzon fel a következő körben jövő játékos 1-10 lap között. (2 lap összesen) 
