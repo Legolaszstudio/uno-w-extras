@@ -9,7 +9,9 @@ import { Router } from '@angular/router';
 })
 export class WebsocketService {
   currentGame: string = '';
+  currentId: number = -1;
   socket?: WebSocket;
+  connected = false;
 
   constructor(
     public spinner: SpinnerService,
@@ -20,11 +22,13 @@ export class WebsocketService {
     this.spinner.showSpinner();
     this.socket = new WebSocket(`ws://${apiHost}/api/websocket`);
     this.socket.addEventListener('open', (_e) => {
-      console.log("Connected to websocket")
+      console.log("Connected to websocket");
+      this.connected = true;
       this.spinner.hideSpinner();
     });
     setTimeout(() => {
       if (this.socket?.readyState == this.socket?.CONNECTING) {
+        this.connected = true;
         this.socket?.close();
         this.spinner.hideSpinner();
         Swal.fire({
@@ -43,9 +47,36 @@ export class WebsocketService {
   }
 
   receivedNewLobbyRes(e: MessageEvent<any>) {
-    this.socket?.removeEventListener('message', this.receivedNewLobbyRes);
+    (this.socket as any)?.removeAllListeners();
     console.log("Got lobby creation result", e);
     this.currentGame = e.data.split(' ')[1];
+    localStorage.setItem('currentGame', this.currentGame);
+    localStorage.setItem('currentId', '1');
     this.router.navigateByUrl('/lobby/' + this.currentGame);
+  }
+
+  async getGameState(gameID: string, callback: any) {
+    this.socket?.send(`getGameState ${gameID}`);
+    this.socket?.addEventListener('message', callback);
+  }
+
+  async getPlayers(): Promise<{
+    id: number;
+    username: string;
+    avatarColor: string;
+  }[]> {
+    this.socket?.send(`getPlayers ${this.currentGame}`);
+    this.players = undefined;
+    this.socket?.addEventListener('message', this.receivedPlayers.bind(this));
+    while (this.players == null) {
+      await new Promise(resolve => setTimeout(resolve, 250)); 
+    }
+    return this.players;
+  }
+
+  players?: [];
+  async receivedPlayers(e: MessageEvent<any>) {
+    (this.socket as any)?.removeAllListeners();
+    this.players = JSON.parse(e.data.split(' ')[1]);
   }
 }

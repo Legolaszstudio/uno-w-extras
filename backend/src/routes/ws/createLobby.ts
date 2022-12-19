@@ -2,6 +2,7 @@ import { SocketStream } from "@fastify/websocket";
 import doesGameExist from "../../database/doesGameExist";
 import { logger } from "../../logger";
 import createLobby from "../../database/createLobby";
+import { socketBindings } from "../socketer";
 
 async function createUniqueId(): Promise<string> {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -23,5 +24,6 @@ export default async function (
     const uniqueId = await createUniqueId();
     await createLobby(uniqueId, username);
     logger.info(`Created lobby ${uniqueId}`);
+    socketBindings[uniqueId] = [];
     connection.socket.send(`lobbyCreated ${uniqueId}`);
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { WebsocketService } from '../services/websocket/websocket.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,7 @@ import Swal from 'sweetalert2';
 export class HomeComponent {
   constructor(
     public websocketService: WebsocketService,
+    private router: Router,
   ) { }
   
   Settings() {}
@@ -22,6 +24,11 @@ export class HomeComponent {
       padding: '3em',
       color: '#716add',
     });
+  }
+
+  async joinLobby() {
+    const inputText = (document.getElementById('autocur') as HTMLInputElement).value as string;
+    this.router.navigateByUrl(`/lobby/${inputText}`);
   }
 
   async newLobby() {
@@ -37,7 +44,7 @@ export class HomeComponent {
           return false;
         }
         // No need to check username for dups, cause you are the only one in the lobby
-        return value;
+        return value.replaceAll(' ', '_');
       }
     });
     if (result.isConfirmed) {
