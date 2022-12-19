@@ -46,5 +46,33 @@ Every game has a unique id, usually made of 5 random characters. This id is used
 
 ## Localstorage keys
 
-currentGameId - id of the current game
-currentUserId - id of the current user
+currentGame - id of the current game
+currentId - id of the current user
+
+## Card ids
+
+# betuk:
+
+- `p`: piros
+- `z`: zold
+- `k`: kek
+- `s`: sarga
+
+betu + `0-9`: 0-9 piros (k0, s9, stb)
+betu + `r`: Revers visszafordító
+betu + `t`: Tiltó (kimarad egy körből)
+betu + `+2`: +2 (két lapot kell húzni)
+`+4`: +4 (négy lapot kell húzni)
+
+#### spec kártyák
+
+Semmi: `semmi` 
+Barátság Pusztító: `baratpuszt`
+Reedem token: `reedemtoken`
+Isten Szaggató: `istenszagg`
+Szovjet Demokrácia: `szovjetd`
+UrbinTurbina: `urbina`
+RickRoll: `rickroll`
+Tolvaj Dokkmunkás: `dokkmunkas`
+Pakli Csere: `pcsere`
+Pride Card: `pcard`
