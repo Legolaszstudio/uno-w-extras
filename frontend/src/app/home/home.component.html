@@ -1,1 +1,35 @@
-<div></div>
+<div id="Middle">
+    <div class="Flexbox">
+        <div>
+            <input id="autocur" style="width: 320px;height: 50px;" type="text" placeholder="Ide írd a meghívó kódot!">
+        </div>
+        <div>
+            <button style="margin-left: 2px;height: 52px;width:50px">
+                <p>Join</p>
+            </button>
+        </div>
+    </div>
+    <div>
+        <button id="NewG_button" (click)="newLobby()">
+            <p style="font-size: 35px;">New Game</p>
+        </button>
+    </div>
+</div>
+<div id="Bottom">
+    <div id="right_alignment">
+        <a target="_blank" href="https://github.com/Legolaszstudio/uno-w-extras">
+            <img src="assets/Btns/github.png" alt="GitHub Logo" class="imglittle">
+        </a>
+    </div>
+    <div class="Flexbox">
+        <div>
+            <img src="assets/Btns/info.png" alt="Info" class="imglittle" (click)="Information()">
+        </div>
+        <div id="margin_left">
+            <img src="assets/Btns/settings.png" alt="Settings" class="imglittle" (click)="Settings()">
+        </div>
+    </div>
+</div>
+<div id="popup" style="background-color: white;">
+
+</div>

@@ -1,4 +1,4 @@
-import Fastify, { FastifyInstance } from 'fastify';
+import Fastify from 'fastify';
 import { logger } from './logger';
 
 export const fastify = Fastify({
@@ -30,13 +30,26 @@ fastify.setErrorHandler((error, request, reply) => {
     if (!reply.sent) reply.status(500).send(error);
 });
 
-fastify.listen({
-    port: PORT,
-    host: '0.0.0.0',
-}, function (err, address) {
-    if (err) {
-        logger.error(err);
-        process.exit(1);
-    }
-    logger.info(`API listening on ${address}`);
-});
+import webs from '@fastify/websocket';
+fastify.register(webs);
+
+import router from './routes/router';
+fastify.register(router);
+
+
+import { init as dbInit } from './database/redis';
+async function main() {
+    await dbInit();
+    fastify.listen({
+        port: PORT,
+        host: '0.0.0.0',
+    }, function (err, address) {
+        if (err) {
+            logger.error(err);
+            process.exit(1);
+        }
+        logger.info(`API listening on ${address}`);
+    });
+}
+
+main();

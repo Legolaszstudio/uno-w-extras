@@ -22,14 +22,14 @@ Unod már az uno-t? Akkor ezt most neked való! Bemutatjuk a világ legjobb, leg
         - `RickRoll`: Míg mindenki a zenét hallgatja addig te jössz egy kör erejéig. (2 lap összesen)
         - `Tolvaj Dokkmunkás`: Kiválaszthatod hogy melyik lapot szeretnéd az opponent playertől/játékostól. (4 lap összesen)
         - `Pakli Csere`: Mindenki jobbra adja a saját pakliját a másiknak. (4 lap összesen)
-        - `Pride Card`: Ezzel a kártyával kiválaszthatod hogy egy adott játékosnál milyen színű kártya lehet nála. (annyi lap ahány játékos van)
+        - `Pride Card`: Ezzel a kártyával kiválaszthatod hogy egy adott játékosnál milyen színű kártya lehet. (annyi lap ahány játékos van)
 
 ## Technology Stack
 
 - Backend:
     - NodeJS
     - Fastify
-    - Socket.io
+    - Websockets
     - Redis
 - Frontend:
     - Angular

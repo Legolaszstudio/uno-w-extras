@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { GameComponent } from './game/game.component';
 import { LobbyComponent } from './lobby/lobby.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     GameComponent,
-    LobbyComponent
+    LobbyComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
