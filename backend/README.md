@@ -15,34 +15,29 @@ Every game has a unique id, usually made of 5 random characters. This id is used
         "id": 1,
         "username": "Sanyika",
         "avatarColor": "#ffa550",
+        "cards": [
+            "p10",
+            "z9",
+            "k+2"
+        ]
     },
     ...
 ]
 ```
 
-`key:currentUser` - id of the currently choosing user
+`key:currentPlayer` - id of the currently choosing user
 
 `key:cardsInCirculation` - list of cards in circulation in JSON:
 ```json
 [
-    "red9",
-    "red8",
-    "yellow2",
-    "urbinTurbina",
+    "r9",
+    "r8",
+    "y2",
+    "urbina",
     "semmi",
 ]
 ```
 
-`key:userId:cards` - contains cards a user holds in JSON (duplicates are contained multiple times):
-```json
-[
-    "red9",
-    "red8",
-    "yellow2",
-    "urbinTurbina",
-    "semmi",
-]
-```
 
 ## Localstorage keys
 
@@ -62,10 +57,11 @@ betu + `0-9`: 0-9 piros (k0, s9, stb)
 betu + `r`: Revers visszafordító
 betu + `t`: Tiltó (kimarad egy körből)
 betu + `+2`: +2 (két lapot kell húzni)
-`+4`: +4 (négy lapot kell húzni)
 
 #### spec kártyák
 
+
+`+4`: +4 (négy lapot kell húzni)
 Semmi: `semmi` 
 Barátság Pusztító: `baratpuszt`
 Reedem token: `reedemtoken`

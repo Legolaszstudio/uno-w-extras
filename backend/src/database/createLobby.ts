@@ -6,5 +6,6 @@ export default async function createLobby(key: string, user: string) {
         id: 1,
         username: user,
         avatarColor: "#ffbf00",
+        cards: [],
     }]));
 }

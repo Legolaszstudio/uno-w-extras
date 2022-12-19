@@ -1,29 +1,34 @@
-.Flex-box{
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
+.Flex-box {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
 }
 .containerFlex {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    margin: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin: 30px;
+}
+
+.ready {
+  cursor: pointer;
+  background-color: #388e3c;
 }
 
 button {
-    cursor: pointer;
-    background-color: #388E3C;
-    border: 0;
-    opacity: 0.8;
-    border-radius: 10px;
-    width: 150px;
-    height: 100px;
-    color: white;
-    :hover {
-        opacity: 0.6;
-    }
-    p {
-        margin: 0;
-        font-size: 40px;
-    }
+  cursor: not-allowed;
+  background-color: rgb(70, 70, 70);
+  border: 0;
+  opacity: 0.8;
+  border-radius: 10px;
+  width: 150px;
+  height: 100px;
+  color: white;
+  :hover {
+    opacity: 0.6;
+  }
+  p {
+    margin: 0;
+    font-size: 40px;
+  }
 }

@@ -51,14 +51,23 @@ export class LobbyComponent implements OnInit {
 
   async gameStateRetrieved(e: MessageEvent<any>) {
     (this.websocket.socket as any)?.removeAllListeners();
-    if (e.data.split(' ')[1] != '0') {
+    this.websocket.currentGame = this.gameId;
+    if (
+      e.data.split(' ')[1] == 'null' ||
+      e.data.split(' ')[1] == null ||
+      e.data.split(' ')[1] == 'undefined'
+    ) {
       this.spinner.hideSpinner();
       this.goHome();
       return;
     }
-    this.websocket.currentGame = this.gameId;
     let username: any;
     if (this.websocket.currentGame != localStorage.getItem('currentGame')) {
+      if (e.data.split(' ')[1] != '0') {
+        this.spinner.hideSpinner();
+        this.goHome();
+        return;
+      }
       this.spinner.hideSpinner();
       // player is connecting to new lobby
       const result = await Swal.fire({
@@ -72,7 +81,6 @@ export class LobbyComponent implements OnInit {
             alert("A névnek 3 és 20 karakter között kell lennie!");
             return false;
           }
-          // No need to check username for dups, cause you are the only one in the lobby
           return value.replaceAll(' ', '_');
         }
       });
@@ -99,10 +107,20 @@ export class LobbyComponent implements OnInit {
 
     this.spinner.hideSpinner();
     (this.websocket.socket as any)?.removeAllListeners();
-    this.websocket.socket?.addEventListener('message', this.handleNewUsersJoining.bind(this));
+    this.websocket.socket?.addEventListener('message', this.handleIncomingMsgs.bind(this));
+
+    if (e.data.split(' ')[1] == '1') {
+      (this.websocket.socket as any)?.removeAllListeners();
+      this.router.navigateByUrl(`/game/${this.gameId}`);
+    }
   }
 
-  handleNewUsersJoining(e: any) {
+  startBtn() {
+    if (this.players.length < 2) return;
+    this.websocket.socket?.send(`startGame ${this.gameId}`);
+  }
+
+  handleIncomingMsgs(e: any) {
     if (e.data.startsWith('userJoined')) {
       console.log('User joined', {
         id: -1,
@@ -114,6 +132,19 @@ export class LobbyComponent implements OnInit {
         username: e.data.split(' ')[1],
         avatarColor: e.data.split(' ')[2],
       });
+    } else if (e.data.startsWith('started')) {
+      this.router.navigateByUrl(`/game/${this.gameId}`);
+      (this.websocket.socket as any)?.removeAllListeners();
+    } else if (e.data.startsWith('starting')) {
+      const num = e.data.split(' ')[1];
+      Swal.fire({
+        toast: true,
+        position: 'bottom',
+        timerProgressBar: true,
+        timer: 1000,
+        title: `A játék ${num} másodperc múlva kezdődik`,
+        showConfirmButton: false,
+      })
     }
   }
 }

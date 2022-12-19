@@ -1,0 +1,53 @@
+.Flex-box {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.containerFlex {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  margin: 30px;
+}
+
+.activeUser {
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.cardShadow {
+  box-shadow: 4px 4px 10px 2px rgb(0 0 0 / 50%);
+}
+
+.centerCard {
+  height: 30vh;
+  width: auto;
+}
+
+.bottomBar {
+  height: 25vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.mainAlignment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 98vh;
+}
+
+.myCardsList {
+  display: flex;
+  flex-direction: row;
+  /* FIXME: center and popup cards */
+  justify-content: space-evenly;
+}
+
+.cardCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

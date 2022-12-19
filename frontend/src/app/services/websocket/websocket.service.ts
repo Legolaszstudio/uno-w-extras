@@ -27,7 +27,11 @@ export class WebsocketService {
       this.spinner.hideSpinner();
     });
     setTimeout(() => {
-      if (this.socket?.readyState == this.socket?.CONNECTING) {
+      if (
+        this.socket?.readyState == this.socket?.CONNECTING ||
+        this.socket?.readyState == this.socket?.CLOSED ||
+        this.socket?.readyState == this.socket?.CLOSING
+      ) {
         this.connected = true;
         this.socket?.close();
         this.spinner.hideSpinner();
@@ -69,7 +73,7 @@ export class WebsocketService {
     this.players = undefined;
     this.socket?.addEventListener('message', this.receivedPlayers.bind(this));
     while (this.players == null) {
-      await new Promise(resolve => setTimeout(resolve, 250)); 
+      await new Promise(resolve => setTimeout(resolve, 250));
     }
     return this.players;
   }

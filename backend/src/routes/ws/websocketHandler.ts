@@ -6,6 +6,8 @@ import getGameState from './getGameState';
 import joinLobby from './joinLobby';
 import getPlayers from './getPlayers';
 import recoLobby from './recoLobby';
+import startGame from './startGame';
+import getCurrentPlayer from './getCurrentPlayer';
 
 export default async function (
     request: FastifyRequest,
@@ -47,6 +49,18 @@ export default async function (
                     connection,
                     split[1],
                 )
+                break;
+            case 'startGame':
+                await startGame(
+                    connection,
+                    split[1],
+                );
+                break;
+            case 'getCurrentPlayer':
+                await getCurrentPlayer(
+                    connection,
+                    split[1],
+                );
                 break;
             default:
                 connection.socket.send('Unknown command');

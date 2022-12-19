@@ -1,8 +1,4 @@
-<!-- <div *ngFor="let player of players">
-    <p>{{ player.username }}</p>    
-</div>
- -->
- <H1 style="text-align: center;">Lobby</H1>
+<H1 style="text-align: center;">Lobby</H1>
 <div class="containerFlex">
     <div *ngFor="let player of players">
         <div class="Flex-box">
@@ -17,7 +13,7 @@
 </div>
 
 <div *ngIf="websocket.currentId == 1" style="width: 200px; float: right;">
-    <button>
+    <button [ngClass]="{'ready': players.length >= 2}" (click)="startBtn()">
         <p>Start</p>
     </button>
 </div>
