@@ -3,6 +3,14 @@
         <div class="containerFlex">
             <div *ngFor="let player of playersWithoutMe">
                 <div class="Flex-box" [ngClass]="{'activeUser': player.id == currentPlayer}">
+                    <div *ngIf="player.id == currentPlayer"
+                        style="margin-left: auto; margin-right: auto; margin-bottom: 3px; background-color: {{player.avatarColor}}; color: {{player.avatarColor}}"
+                        class="dot-elastic">
+                        <div style="background-color: {{player.avatarColor}}; color: {{player.avatarColor}}"
+                            class="dot-elastic-left"></div>
+                        <div style="background-color: {{player.avatarColor}}; color: {{player.avatarColor}}"
+                            class="dot-elastic-right"></div>
+                    </div>
                     <div>
                         <img src="/assets/player.svg" alt=""
                             style="background-color: {{ player.avatarColor }}; height: 50px; border-radius: 5px; display: block; margin: auto;">
@@ -20,14 +28,17 @@
         <img [src]="cardStrToImgPath(stack[stack.length - 1] ?? 'k0')" class="centerCard cardShadow">
     </div>
 
-    <div class="bottomBar">
+    <div class="bottomBar" [ngClass]="{'invalidMove': this.websocket.currentId != this.currentPlayer}">
         <div class="cardCenter" style="border: 1px solid black">
             <!-- FIXME: Replace with card back -->
-            <img [src]="cardStrToImgPath('k0')" style="width: auto; height: 20vh; margin: 10px" alt="">
+            <img [src]="cardStrToImgPath('k0')" class="cp" (click)="pullCard()"
+                style="width: auto; height: 20vh; margin: 10px" alt="">
         </div>
         <div class="myCardsList" style="flex-grow: 2;">
             <div *ngFor="let card of myCards" class="cardCenter">
-                <img [src]="cardStrToImgPath(card)" class="cardShadow" style="width: auto; height: 20vh; ">
+                <div (click)="putCard(card)" class="cp" [ngClass]="{'invalidMove': !canPutCard(card)}">
+                    <img [src]="cardStrToImgPath(card)" class="cardShadow" style="width: auto; height: 20vh; ">
+                </div>
             </div>
         </div>
     </div>

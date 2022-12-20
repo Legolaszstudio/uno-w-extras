@@ -27,7 +27,7 @@ Every game has a unique id, usually made of 5 random characters. This id is used
 
 `key:currentPlayer` - id of the currently choosing user
 
-`key:cardsInCirculation` - list of cards in circulation (aka waiting to be picked up) in JSON:
+`key:cardsInCirculation` - list of cards in circulation (aka waiting to be put down or already put down) in JSON:
 ```json
 [
     "r9",
@@ -48,6 +48,8 @@ Every game has a unique id, usually made of 5 random characters. This id is used
     "semmi", // 4 -> newest
 ]
 ```
+
+`key:direction` - 1 if clockwise, -1 if counterclockwise
 
 ## Localstorage keys
 

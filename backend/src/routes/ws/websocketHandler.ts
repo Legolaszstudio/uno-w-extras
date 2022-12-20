@@ -9,6 +9,7 @@ import recoLobby from './recoLobby';
 import startGame from './startGame';
 import getCurrentPlayer from './getCurrentPlayer';
 import getStack from './getStack';
+import putCard from './putCard';
 
 export default async function (
     request: FastifyRequest,
@@ -67,6 +68,14 @@ export default async function (
                 await getStack(
                     connection,
                     split[1],
+                );
+                break;
+            case 'putCard':
+                await putCard(
+                    connection,
+                    split[1],
+                    parseInt(split[2]),
+                    split[3],
                 );
                 break;
             default:

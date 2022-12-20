@@ -51,3 +51,93 @@
   align-items: center;
   justify-content: center;
 }
+
+.bottomBar.invalidMove > div.cardCenter > img {
+  cursor: not-allowed !important;
+}
+
+.invalidMove {
+  cursor: not-allowed !important;
+  filter: brightness(50%);
+}
+
+.dot-elastic {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  animation: dot-elastic 1s infinite linear;
+}
+.dot-elastic-left,
+.dot-elastic-right {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+.dot-elastic-left {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  animation: dot-elastic-before 1s infinite linear;
+}
+.dot-elastic-right {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  animation: dot-elastic-after 1s infinite linear;
+}
+
+@keyframes dot-elastic-before {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1.5);
+  }
+  50% {
+    transform: scale(1, 0.67);
+  }
+  75% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+@keyframes dot-elastic {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1, 1.5);
+  }
+  75% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+@keyframes dot-elastic-after {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1, 0.67);
+  }
+  75% {
+    transform: scale(1, 1.5);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}

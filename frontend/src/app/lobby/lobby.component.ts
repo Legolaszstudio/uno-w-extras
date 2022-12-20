@@ -144,7 +144,7 @@ export class LobbyComponent implements OnInit {
         timer: 1000,
         title: `A játék ${num} másodperc múlva kezdődik`,
         showConfirmButton: false,
-      })
+      });
     }
   }
 }

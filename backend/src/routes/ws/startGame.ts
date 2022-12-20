@@ -36,8 +36,7 @@ export default async function (
             const randomIndex = Math.floor(Math.random() * tempCards.length);
             const card = tempCards[randomIndex];
 
-            delete tempCards[randomIndex];
-            tempCards = tempCards.filter((card) => card != null);
+            tempCards.splice(randomIndex, 1);
 
             user.cards.push(card);
         }
@@ -45,5 +44,6 @@ export default async function (
     await client.SET(`${key}:users`, JSON.stringify(users));
     await client.SET(`${key}:currentPlayer`, 1);
     await client.SET(`${key}:stack`, JSON.stringify([getStartingCard()]));
+    await client.SET(`${key}:direction`, 1);
     broadcast(key, 'started');
 }
