@@ -37,11 +37,32 @@ export class GameComponent implements OnInit {
   ) { }
 
   canPutCard(card: string): boolean {
-    const currentCard = this.stack[this.stack.length - 1] ?? 'p0';
+    let currentCard = this.stack[this.stack.length - 1] ?? 'p0';
+
+    // Get the color part of question cards
+    if (currentCard.startsWith('color_')) {
+      currentCard = currentCard.split('color_')[1];
+    } else if (currentCard.startsWith('+4_')) {
+      currentCard = currentCard.split('+4_')[1];
+    }
+
+    if (currentCard.length > 4) {
+      // You can put anything on special cards
+      return true;
+    }
+
+    if (card.startsWith('color') || card.startsWith('+4')) {
+      // You may color or +4 anything
+      return true;
+    }
+
     if (card.includes('+') && currentCard.includes('+')) {
       return true;
     } else if (currentCard.includes('+') && card.length <= 4) {
-      // You may only put plus cards on plus cards (except special cards)
+      // You may only put plus cards on plus cards (except special cards) or colored cards
+      if (currentCard[0] == card[0]) {
+        return true;
+      }
       return false;
     }
 
@@ -88,7 +109,7 @@ export class GameComponent implements OnInit {
     this.websocket.socket?.send(`pullCard ${this.websocket.currentGame} ${this.websocket.currentId}`);
   }
 
-  putCard(card: string) {
+  async putCard(card: string) {
     if (this.websocket.currentId != this.currentPlayer) {
       Swal.fire({
         toast: true,
@@ -113,6 +134,27 @@ export class GameComponent implements OnInit {
         showConfirmButton: false,
       });
       return;
+    }
+
+    if (card == '+4' || card == 'color') {
+      const result = await Swal.fire({
+        icon: 'question',
+        title: 'Milyen színt kérsz?',
+        html: `
+        <select name="colors" id="colorPicker">
+          <option value="k">Kék</option>
+          <option value="z">Zöld</option>
+          <option value="p">Piros</option>
+          <option value="s">Sárga</option>
+        </select>
+        `,
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        preConfirm: () => {
+          return (document.getElementById('colorPicker') as HTMLSelectElement)?.value;
+        }
+      });
+      card += '_' + result.value;
     }
 
     this.websocket.socket?.send(`putCard ${this.websocket.currentGame} ${this.websocket.currentId} ${card}`);
@@ -185,4 +227,41 @@ export class GameComponent implements OnInit {
     }
     return `assets/Cards/spec/${card}.png`;
   }
+
+  public onmouseL(event: Event) {
+    if (event.target == null) return;
+    (event.target as HTMLElement).style.zIndex = "10"
+    anime({
+      targets: event.target,
+      translateY: {
+        value: -100,
+        duration: 400,
+        easing: 'easeInOutSine'
+      },
+      scale: {
+        value: 1.25,
+        duration: 400,
+        easing: 'easeInOutSine'
+      },
+    });
+
+  }
+  public onmouseoutL(event: Event) {
+    (event.target as HTMLElement).style.zIndex = "0"
+    anime({
+      targets: event.target,
+      translateY: {
+        value: 0,
+        duration: 400,
+        easing: 'easeInOutSine'
+      },
+      scale: {
+        value: 1,
+        duration: 400,
+        easing: 'easeInOutSine'
+      },
+      delay: 250
+    });
+  }
+
 }

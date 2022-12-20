@@ -10,6 +10,7 @@ import startGame from './startGame';
 import getCurrentPlayer from './getCurrentPlayer';
 import getStack from './getStack';
 import putCard from './putCard';
+import pullCard from './pullCard';
 
 export default async function (
     request: FastifyRequest,
@@ -76,6 +77,13 @@ export default async function (
                     split[1],
                     parseInt(split[2]),
                     split[3],
+                );
+                break;
+            case 'pullCard':
+                await pullCard(
+                    connection,
+                    split[1],
+                    parseInt(split[2]),
                 );
                 break;
             default:

@@ -13,7 +13,20 @@ for (const item of ['p', 'z', 'k', 's']) {
 
 for (let i = 0; i < 4; i++) {
     allCards.push('+4');
+    allCards.push('color');
 }
 
 // Add all cards again (we have double of everything)
 allCards.push(...allCards);
+
+export const specialCards = [
+    "semmi",
+    "baratpuszt",
+    "reedemtoken",
+    "szovjetd",
+    "urbina",
+    "rickroll",
+    "dokkmunkas",
+    "pcsere",
+    "pcard",
+];

@@ -22,3 +22,20 @@ body {
 .cp {
   cursor: pointer;
 }
+
+#colorPicker > option{
+  font-size: 20px;
+  cursor: pointer;
+}
+#colorPicker > option[value="p"] {
+  color: red;
+}
+#colorPicker > option[value="z"] {
+  color: green;
+}
+#colorPicker > option[value="s"] {
+  color: rgb(203, 203, 51);
+}
+#colorPicker > option[value="k"] {
+  color: blue;
+}

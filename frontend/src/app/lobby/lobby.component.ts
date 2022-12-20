@@ -100,7 +100,7 @@ export class LobbyComponent implements OnInit {
     }
     this.players = await this.websocket.getPlayers();
 
-    if (this.websocket.currentId == -1) {
+    if (this.websocket.currentId == -1 || username != null) {
       localStorage.setItem('currentId', this.players[this.players.length - 1].id.toString());
       this.websocket.currentId = this.players[this.players.length - 1].id;
     }

@@ -51,6 +51,8 @@ Every game has a unique id, usually made of 5 random characters. This id is used
 
 `key:direction` - 1 if clockwise, -1 if counterclockwise
 
+`key:lastPlayer` - Who put last card down
+
 ## Localstorage keys
 
 currentGame - id of the current game

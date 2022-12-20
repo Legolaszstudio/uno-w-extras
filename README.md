@@ -15,15 +15,15 @@ Unod már az uno-t? Akkor ezt most neked való! Bemutatjuk a világ legjobb, leg
     - Egyszerre csak 1 lapot lehet letenni
     - Vannak különleges lapok:
         - `Semmi`: Ezt a kártyát bármire le tudod rakni, de konkrét semmire sem jó, viszont utolsó lapként nem tehető le. (4 lap összesen)
-        - `Barátság Pusztító`: Ennél a kártyánál te mondod meg hogy mennyit húzzon fel a következő körben jövő játékos 1-10 lap között. (2 lap összesen) 
+        - `Barátság Pusztító`: Ennél a kártyánál te mondod meg hogy mennyit húzzon fel a következő körben jövő játékos 1-10 lap között. (4 lap összesen) 
         - `Reedem token`: Megszabadít a felhúzásoktól, ha tudsz válaszolni egy kérdésre (nem számít bele a lapjaid számába) (4 lap összesen) 
         - `Isten Szaggató`: Ha megkapod és leteszed (bármire lerakhatod) ezt a lapot akkor számodra vége a játéknak de az esélye hogy megkapod a lapot az 0,000001%. (1 lap összesen)
         - `Szovjet Demokrácia`: Ha ezt a kártyát valaki leteszi akkor, mindenkinek annyi kártyát kell felhúznia hogy annyi kártyája legyen mindenkinek mint amennyi a legtöbb kártyát birtokloéval. (4 lap összesen)
         - `UrbinTurbina`: Elfújja két random lapodat a süllyesztőbe ha leteszed.(A cisco áldásával), (4 lap összesen)
-        - `RickRoll`: Míg mindenki a zenét hallgatja addig te jössz egy kör erejéig. (2 lap összesen)
+        - `RickRoll`: Míg mindenki a zenét hallgatja addig te jössz egy kör erejéig. (4 lap összesen)
         - `Tolvaj Dokkmunkás`: Kiválaszthatod hogy melyik lapot szeretnéd az opponent playertől/játékostól. (4 lap összesen)
         - `Pakli Csere`: Mindenki jobbra adja a saját pakliját a másiknak. (4 lap összesen)
-        - `Pride Card`: Ezzel a kártyával kiválaszthatod hogy egy adott játékosnál milyen színű kártya lehet. (annyi lap ahány játékos van)
+        - `Pride Card`: Ezzel a kártyával kiválaszthatod hogy egy adott játékosnál milyen színű kártya lehet. (4 lap összesen)
 
 ## Technology Stack
 

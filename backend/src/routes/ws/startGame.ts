@@ -31,6 +31,7 @@ export default async function (
     await client.SET(key, 1);
     const users = await getUsers(key);
     let tempCards = [...allCards];
+    const usedCards = [];
     for (const user of users) {
         for (let i = 0; i < 5; i++) {
             const randomIndex = Math.floor(Math.random() * tempCards.length);
@@ -39,11 +40,13 @@ export default async function (
             tempCards.splice(randomIndex, 1);
 
             user.cards.push(card);
+            usedCards.push(card);
         }
     }
     await client.SET(`${key}:users`, JSON.stringify(users));
     await client.SET(`${key}:currentPlayer`, 1);
     await client.SET(`${key}:stack`, JSON.stringify([getStartingCard()]));
     await client.SET(`${key}:direction`, 1);
+    await client.SET(`${key}:cardsInCirculation`, JSON.stringify(usedCards));
     broadcast(key, 'started');
 }

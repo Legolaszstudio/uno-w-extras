@@ -19,15 +19,17 @@ export default async function (
         return;
     }
 
-    if (!currentPlayer?.cards.includes(card)) {
+    if (!currentPlayer?.cards.includes(card.split('_')[0])) {
         connection.socket.send(`Player ${userId} does not have card ${card}`);
         return;
     }
 
-    const cardIndex = currentPlayer.cards.indexOf(card);
+    const cardIndex = currentPlayer.cards.indexOf(card.split('_')[0]);
     currentPlayer.cards.splice(cardIndex, 1);
     const playerListIndex = players.indexOf(currentPlayer);
     players[playerListIndex].cards = currentPlayer.cards;
+
+    await client.SET(`${key}:lastPlayer`, currentPlayerId);
 
     let direction = parseInt(await client.GET(`${key}:direction`) ?? '1');
     if (card.length == 2 && card[1] == 'r') {
@@ -48,7 +50,7 @@ export default async function (
     }
 
     if (currentPlayerId > players.length) {
-        currentPlayerId = 1;
+        currentPlayerId = currentPlayerId - players.length;
     }
 
     await client.SET(`${key}:currentPlayer`, currentPlayerId);

@@ -31,11 +31,11 @@
     <div class="bottomBar" [ngClass]="{'invalidMove': this.websocket.currentId != this.currentPlayer}">
         <div class="cardCenter" style="border: 1px solid black">
             <!-- FIXME: Replace with card back -->
-            <img [src]="cardStrToImgPath('k0')" class="cp" (click)="pullCard()"
+            <img src="/assets/Cards/spec/back.png" class="cp" (click)="pullCard()"
                 style="width: auto; height: 20vh; margin: 10px" alt="">
         </div>
-        <div class="myCardsList" style="flex-grow: 2;">
-            <div *ngFor="let card of myCards" class="cardCenter">
+        <div class="myCardsList" style="flex-grow: 2;" >
+            <div *ngFor="let card of myCards" class="cardCenter" (mouseenter)="onmouseL($event)" (mouseleave)="onmouseoutL($event)">
                 <div (click)="putCard(card)" class="cp" [ngClass]="{'invalidMove': !canPutCard(card)}">
                     <img [src]="cardStrToImgPath(card)" class="cardShadow" style="width: auto; height: 20vh; ">
                 </div>
