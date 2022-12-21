@@ -39,18 +39,22 @@ export default async function (
     }
 
     currentPlayerId += direction;
+    if (currentPlayerId <= 0) {
+        currentPlayerId = players.length;
+    }
+    if (currentPlayerId > players.length) {
+        currentPlayerId = currentPlayerId - players.length;
+    }
 
     // Tilto kartya esetén kettőt lépünk
     if (card.length == 2 && card[1] == 't') {
         currentPlayerId += direction;
-    }
-
-    if (currentPlayerId <= 0) {
-        currentPlayerId = players.length;
-    }
-
-    if (currentPlayerId > players.length) {
-        currentPlayerId = currentPlayerId - players.length;
+        if (currentPlayerId <= 0) {
+            currentPlayerId = players.length;
+        }
+        if (currentPlayerId > players.length) {
+            currentPlayerId = currentPlayerId - players.length;
+        }
     }
 
     await client.SET(`${key}:currentPlayer`, currentPlayerId);
@@ -58,7 +62,7 @@ export default async function (
     const stack: string[] = JSON.parse(await client.GET(`${key}:stack`) ?? '[]');
     stack.push(card);
     if (stack.length > 10) {
-        if (!stack.every(c => c.includes('+') || c.includes('baratpuszt'))) {
+        if (!stack.every(c => c.includes('+'))) {
             stack.splice(0, 1);
         }
     }
@@ -71,7 +75,12 @@ export default async function (
 
     broadcast(
         key,
-        'players: ' + JSON.stringify(players),
+        'lastPlayer: ' + await client.GET(`${key}:lastPlayer`),
+    );
+
+    broadcast(
+        key,
+        'currentStack: ' + JSON.stringify(stack),
     );
 
     broadcast(
@@ -81,6 +90,6 @@ export default async function (
 
     broadcast(
         key,
-        'currentStack: ' + JSON.stringify(stack),
+        'players: ' + JSON.stringify(players),
     );
 }

@@ -75,6 +75,7 @@ export class WebsocketService {
     while (this.players == null) {
       await new Promise(resolve => setTimeout(resolve, 250));
     }
+    await new Promise(resolve => setTimeout(resolve, 100));
     return this.players;
   }
 

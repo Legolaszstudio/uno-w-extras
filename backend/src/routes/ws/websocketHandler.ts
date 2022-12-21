@@ -20,7 +20,7 @@ export default async function (
     connection.socket.on('message', async (message) => {
         const msg = message.toString();
         const split = msg.split(' ');
-        logger.info(`${request.realip} websocket: ${msg}`);
+        logger.info(`Websocket msg: ${msg}`);
         switch (split[0]) {
             case 'getGameState':
                 await getGameState(
@@ -84,6 +84,7 @@ export default async function (
                     connection,
                     split[1],
                     parseInt(split[2]),
+                    split[3] == null ? undefined : parseInt(split[3]),
                 );
                 break;
             default:

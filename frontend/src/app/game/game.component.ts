@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class GameComponent implements OnInit {
   currentPlayer = 1;
+  lastPlayer = 1;
   players: {
     id: number;
     username: string;
@@ -38,6 +39,8 @@ export class GameComponent implements OnInit {
 
   canPutCard(card: string): boolean {
     let currentCard = this.stack[this.stack.length - 1] ?? 'p0';
+    const originalTopCard = currentCard;
+    currentCard = currentCard.replaceAll('-', '+');
 
     // Get the color part of question cards
     if (currentCard.startsWith('color_')) {
@@ -60,7 +63,7 @@ export class GameComponent implements OnInit {
       return true;
     } else if (currentCard.includes('+') && card.length <= 4) {
       // You may only put plus cards on plus cards (except special cards) or colored cards
-      if (currentCard[0] == card[0]) {
+      if (!originalTopCard.includes('+') && currentCard[0] == card[0]) {
         return true;
       }
       return false;
@@ -174,9 +177,10 @@ export class GameComponent implements OnInit {
       }
 
       this.websocket.socket?.addEventListener('message', this.weGotALetter.bind(this));
+      await new Promise(resolve => setTimeout(resolve, 100));
+      this.websocket.socket?.send(`getCurrentPlayer ${this.websocket.currentGame}`);
       this.websocket.socket?.send(`getStack ${this.websocket.currentGame}`);
       this.websocket.socket?.send(`getPlayers ${this.websocket.currentGame}`);
-      this.websocket.socket?.send(`getCurrentPlayer ${this.websocket.currentGame}`);
     });
   }
 
@@ -211,15 +215,46 @@ export class GameComponent implements OnInit {
         return a.length > 4 ? 1 : -1;
       });
       this.myCards = tempMyCards;
+
+      await new Promise(resolve => setTimeout(resolve, 500));
+      if (
+        this.stack[this.stack.length - 1].includes('+') &&
+        this.currentPlayer == this.websocket.currentId
+      ) {
+        // Putting a +2 or +4 on another +2 or +4 is allowed
+        if (this.myCards.some(x => x.includes('+'))) {
+          // FIXME: Disable pullcard
+          return;
+        }
+
+        // FIXME: REEDEM TOKEN IS IDE JÖN
+
+        // Handle + stack
+        let i = this.stack.length - 1;
+        let summa = 0;
+        while (i >= 0 && this.stack[i].includes('+')) {
+          summa += parseInt(this.stack[i].split('+')[1][0]);
+          i--;
+        }
+        this.currentPlayer = -2;
+        await this.websocket.socket?.send(`pullCard ${this.websocket.currentGame} ${this.websocket.currentId} ${summa}`);
+        Swal.fire({
+          title: 'HÚZZ FEL SZERENCSÉTLEN!',
+          text: `Húzz ${summa} lapot!`,
+        });
+      }
     } else if (msg.startsWith("currentPlayer: ")) {
       this.currentPlayer = parseInt(msg.split(' ')[1]);
     } else if (msg.startsWith("currentStack: ")) {
       this.stack = JSON.parse(msg.split(' ')[1]);
+    } else if (msg.startsWith("lastPlayer: ")) {
+      this.lastPlayer = parseInt(msg.split(' ')[1]);
     }
     this.cdr.detectChanges();
   }
 
   cardStrToImgPath(card: string) {
+    card = card.replaceAll('-', '+');
     if (card.startsWith("p") || card.startsWith("z") || card.startsWith("k") || card.startsWith("s")) {
       if (card.length <= 4) {
         return `assets/Cards/${card[0]}/${card.substring(1)}.jpg`;
@@ -262,6 +297,7 @@ export class GameComponent implements OnInit {
       },
       delay: 250
     });
+
   }
 
 }

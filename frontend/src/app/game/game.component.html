@@ -38,8 +38,9 @@
             <div *ngFor="let card of myCards" class="cardCenter" (mouseenter)="onmouseL($event)" (mouseleave)="onmouseoutL($event)">
                 <div (click)="putCard(card)" class="cp" [ngClass]="{'invalidMove': !canPutCard(card)}">
                     <img [src]="cardStrToImgPath(card)" class="cardShadow" style="width: auto; height: 20vh; ">
-                </div>
+                </div> 
             </div>
         </div>
     </div>
 </div>
+<div class="Noneof"></div>
