@@ -75,8 +75,8 @@ export class GameComponent implements OnInit {
       }
     }
 
-    if (card.length > 4) {
-      // Special cards can be put on anything
+    if (card.length > 4 && !currentCard.includes('+')) {
+      // Special cards can be put on anything except plus cards
       return true;
     }
 
@@ -160,6 +160,41 @@ export class GameComponent implements OnInit {
       card += '_' + result.value;
     }
 
+    if (card == "baratpuszt") {
+      let nextPlayerId = this.websocket.currentId + 1;
+      if (nextPlayerId >= this.players.length) {
+        nextPlayerId = 1;
+      }
+      const nextPlayer = this.players[nextPlayerId - 1].username;
+
+      const result = await Swal.fire({
+        icon: 'question',
+        title: `Mennyit húzzon fel ${nextPlayer}?`,
+        html: `
+        <input type="number" id="numberPicker" class="swal2-input" min="1" max="10" value="5">
+        `,
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        preConfirm: () => {
+          let result: string | number = (document.getElementById('numberPicker') as HTMLSelectElement)?.value;
+          try {
+            result = parseInt(result);
+          } catch (e) {
+            alert("Adj meg egy számot 1 és 10 között!")
+            return false;
+          }
+
+          if (result < 1 || result > 10 || isNaN(result)) {
+            alert("Adj meg egy számot 1 és 10 között!")
+            return false;
+          }
+
+          return result;
+        }
+      });
+      card += '_' + result.value;
+    }
+
     this.websocket.socket?.send(`putCard ${this.websocket.currentGame} ${this.websocket.currentId} ${card}`);
     const usedCard = this.myCards.indexOf(card);
     this.myCards.splice(usedCard, 1);
@@ -218,12 +253,52 @@ export class GameComponent implements OnInit {
 
       await new Promise(resolve => setTimeout(resolve, 500));
       if (
+        this.stack[this.stack.length - 1].startsWith('baratpuszt_') &&
+        this.currentPlayer == this.websocket.currentId
+      ) {
+        const noOfCards = parseInt(this.stack[this.stack.length - 1].split('_')[1]);
+
+        this.currentPlayer = -2;
+        await this.websocket.socket?.send(`pullCard ${this.websocket.currentGame} ${this.websocket.currentId} ${noOfCards}`);
+
+        if (noOfCards > 4) {
+          let playerBeforeId = this.websocket.currentId - 1;
+          if (playerBeforeId <= 0) {
+            playerBeforeId = this.players.length;
+          }
+          const playerBefore = this.players[playerBeforeId - 1].username;
+
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            icon: 'warning',
+            title: `${playerBefore} megszívatott (${noOfCards} lap)!`,
+            text: `Ezt nem hagynám a helyedben!`,
+            timer: 3500,
+            timerProgressBar: true,
+          });
+        } else {
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            icon: 'warning',
+            title: 'Rossz lehet neked',
+            text: `Húztál ${noOfCards} lapot!`,
+            timer: 3000,
+            timerProgressBar: true,
+          });
+        }
+      }
+
+      if (
         this.stack[this.stack.length - 1].includes('+') &&
         this.currentPlayer == this.websocket.currentId
       ) {
         // Putting a +2 or +4 on another +2 or +4 is allowed
         if (this.myCards.some(x => x.includes('+'))) {
-          // FIXME: Disable pullcard
+          // FIXME: Accept current number of pulls instead of putting own
           return;
         }
 
@@ -239,8 +314,14 @@ export class GameComponent implements OnInit {
         this.currentPlayer = -2;
         await this.websocket.socket?.send(`pullCard ${this.websocket.currentGame} ${this.websocket.currentId} ${summa}`);
         Swal.fire({
-          title: 'HÚZZ FEL SZERENCSÉTLEN!',
-          text: `Húzz ${summa} lapot!`,
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          icon: 'warning',
+          title: 'Rossz lehet neked',
+          text: `Húztál ${summa} lapot!`,
+          timer: 3000,
+          timerProgressBar: true,
         });
       }
     } else if (msg.startsWith("currentPlayer: ")) {
@@ -259,6 +340,9 @@ export class GameComponent implements OnInit {
       if (card.length <= 4) {
         return `assets/Cards/${card[0]}/${card.substring(1)}.jpg`;
       }
+    }
+    if (card.startsWith("baratpuszt")) {
+      card = card.replaceAll('_', '').replaceAll('-', '').replaceAll('+', '');
     }
     return `assets/Cards/spec/${card}.png`;
   }

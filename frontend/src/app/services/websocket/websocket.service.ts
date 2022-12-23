@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class WebsocketService {
   currentGame: string = '';
+  /** Your userid */
   currentId: number = -1;
   socket?: WebSocket;
   connected = false;

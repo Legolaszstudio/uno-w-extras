@@ -71,7 +71,10 @@ export default async function pullCard(
 
     const stack: string[] = JSON.parse(await client.GET(`${key}:stack`) ?? '[]');
     if (noOfCards != null || (noOfCards ?? 1) > 1) {
-        const lastcard = stack[stack.length - 1];
+        let lastcard = stack[stack.length - 1];
+        if (lastcard.startsWith("baratpuszt")) {
+            lastcard = lastcard.replaceAll('_', '-');
+        }
         stack.push(lastcard.replaceAll('+', '-'));
         await client.SET(`${key}:stack`, JSON.stringify(stack));
     }
