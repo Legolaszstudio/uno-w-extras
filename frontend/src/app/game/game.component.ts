@@ -59,7 +59,7 @@ export class GameComponent implements OnInit {
       return true;
     }
 
-    if (card.includes('+') && currentCard.includes('+')) {
+    if (card.includes('+') && (currentCard.includes('+') || originalTopCard.includes('+'))) {
       return true;
     } else if (currentCard.includes('+') && card.length <= 4) {
       // You may only put plus cards on plus cards (except special cards) or colored cards
@@ -70,12 +70,12 @@ export class GameComponent implements OnInit {
     }
 
     if (currentCard.length <= 4 && card.length <= 4) {
-      if (currentCard[0] == card[0] || currentCard.substring(1) == card.substring(1)) {
+      if ((currentCard[0] == card[0] || currentCard.substring(1) == card.substring(1)) && !originalTopCard.includes('+')) {
         return true;
       }
     }
 
-    if (card.length > 4 && !currentCard.includes('+')) {
+    if (card.length > 4 && !originalTopCard.includes('+')) {
       // Special cards can be put on anything except plus cards
       return true;
     }
@@ -94,6 +94,28 @@ export class GameComponent implements OnInit {
         title: `Most nem te jössz!`,
         showConfirmButton: false,
       });
+      return;
+    }
+
+    if (this.stack[this.stack.length - 1].includes('+')) {
+      // Accept faith instead of putting another + card
+      let i = this.stack.length - 1;
+      let summa = 0;
+      while (i >= 0 && this.stack[i].includes('+')) {
+        summa += parseInt(this.stack[i].split('+')[1][0]);
+        i--;
+      }
+
+      const result = await Swal.fire({
+        icon: 'warning',
+        title: `Növelhetnéd a tétet a következő számára!`,
+        text: `Biztosan húzol ${summa} lapot?`,
+        showCancelButton: true,
+        confirmButtonText: `Igen`,
+        cancelButtonText: `Nem`,
+      });
+      if (!result.isConfirmed) return;
+      this.websocket.socket?.send(`pullCard ${this.websocket.currentGame} ${this.websocket.currentId} ${summa}`);
       return;
     }
 
@@ -298,7 +320,6 @@ export class GameComponent implements OnInit {
       ) {
         // Putting a +2 or +4 on another +2 or +4 is allowed
         if (this.myCards.some(x => x.includes('+'))) {
-          // FIXME: Accept current number of pulls instead of putting own
           return;
         }
 

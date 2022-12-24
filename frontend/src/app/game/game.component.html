@@ -30,7 +30,6 @@
 
     <div class="bottomBar" [ngClass]="{'invalidMove': this.websocket.currentId != this.currentPlayer}">
         <div class="cardCenter" style="border: 1px solid black">
-            <!-- FIXME: Replace with card back -->
             <img src="/assets/Cards/spec/back.png" class="cp" (click)="pullCard()"
                 style="width: auto; height: 20vh; margin: 10px" alt="">
         </div>
