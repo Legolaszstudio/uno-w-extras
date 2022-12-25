@@ -9,6 +9,7 @@ const PORT = 3000;
 fastify.addHook('onRequest', (request, reply, done) => {
     // Use https when possible
     reply.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+    reply.header('Access-Control-Allow-Origin', '*');
     request.realip = (request.headers['x-real-ip'] as string) ?? request.ip;
     done();
 });

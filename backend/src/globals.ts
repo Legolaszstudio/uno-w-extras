@@ -22,7 +22,7 @@ allCards.push(...allCards);
 export const specialCards = [
     "semmi",
     "baratpuszt",
-    "reedemtoken",
+    "redeemtoken",
     "szovjetd",
     "urbina",
     "rickroll",

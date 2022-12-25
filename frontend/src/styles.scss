@@ -6,12 +6,10 @@
 
 body {
   background: rgb(117, 117, 117);
-  background: linear-gradient(
-    180deg,
-    rgba(117, 117, 117, 1) 0%,
-    rgba(158, 158, 158, 1) 50%,
-    rgba(189, 189, 189, 1) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(117, 117, 117, 1) 0%,
+      rgba(158, 158, 158, 1) 50%,
+      rgba(189, 189, 189, 1) 100%);
   background-attachment: fixed;
 }
 
@@ -23,19 +21,69 @@ body {
   cursor: pointer;
 }
 
-#colorPicker > option{
+#colorPicker>option {
   font-size: 20px;
   cursor: pointer;
 }
-#colorPicker > option[value="p"] {
+
+#colorPicker>option[value="p"] {
   color: red;
 }
-#colorPicker > option[value="z"] {
+
+#colorPicker>option[value="z"] {
   color: green;
 }
-#colorPicker > option[value="s"] {
+
+#colorPicker>option[value="s"] {
   color: rgb(203, 203, 51);
 }
-#colorPicker > option[value="k"] {
+
+#colorPicker>option[value="k"] {
   color: blue;
+}
+
+.quizBtn {
+  margin: 10px;
+  padding: 20px;
+  border: 0;
+  opacity: 1;
+  border-radius: 10px;
+  color: white;
+  width: 100%;
+  height: 100%;
+
+  :hover {
+    opacity: 0.75;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.quizBtn.red {
+  background-color: #c83c3c;
+}
+
+.quizBtn.green {
+  background-color: #40d668;
+}
+
+.quizBtn.yellow {
+  background-color: #c4c125;
+}
+
+.quizBtn.blue {
+  background-color: #18abab;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around
 }

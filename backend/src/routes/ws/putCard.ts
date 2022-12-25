@@ -13,6 +13,7 @@ export default async function (
     const players = await getUsers(key);
     const currentPlayer = players.find((player) => player.id == userId);
     let currentPlayerId = parseInt(await client.GET(`${key}:currentPlayer`) ?? '0');
+    const startingCurrentPlayer = currentPlayerId;
 
     if (currentPlayerId != userId) {
         connection.socket.send(`It is not player ${userId}'s turn`);
@@ -57,6 +58,11 @@ export default async function (
         }
     }
 
+    if (card == 'redeemtoken') {
+        // Putting down redeem doesn't change the current player turn
+        currentPlayerId = startingCurrentPlayer;
+    }
+
     await client.SET(`${key}:currentPlayer`, currentPlayerId);
     await client.SET(`${key}:users`, JSON.stringify(players));
     const stack: string[] = JSON.parse(await client.GET(`${key}:stack`) ?? '[]');
@@ -67,7 +73,7 @@ export default async function (
         }
     }
     await client.SET(`${key}:stack`, JSON.stringify(stack));
-
+    
     broadcast(
         key,
         `User ${userId} put card ${card}`,
@@ -75,14 +81,14 @@ export default async function (
 
     broadcast(
         key,
-        'lastPlayer: ' + await client.GET(`${key}:lastPlayer`),
-    );
-
-    broadcast(
-        key,
         'currentStack: ' + JSON.stringify(stack),
     );
-
+    
+    broadcast(
+        key,
+        'lastPlayer: ' + await client.GET(`${key}:lastPlayer`),
+    );
+    
     broadcast(
         key,
         'currentPlayer: ' + currentPlayerId,

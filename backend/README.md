@@ -78,9 +78,9 @@ betu + `+2`: +2 (két lapot kell húzni)
 `color`: szín választó (színt lehet választani, de nem kell húzni lapot)
 `+4`: +4 (négy lapot kell húzni és lehet színt kérni)
 
-Semmi: `semmi` 
-Barátság Pusztító: `baratpuszt` (1től 10ig)
-Reedem token: `reedemtoken`
+Semmi: `semmi` ✅
+Barátság Pusztító: `baratpuszt` (1től 10ig) ✅
+redeem token: `redeemtoken`
 Isten Szaggató: `istenszagg`
 Szovjet Demokrácia: `szovjetd`
 UrbinTurbina: `urbina`
